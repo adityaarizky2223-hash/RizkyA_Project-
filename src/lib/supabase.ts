@@ -24,11 +24,11 @@ export interface Student {
   created_at: string;
 }
 
-export interface Attendance {
+export interface ExamResult {
   id: string;
-  user_id: string; // works for both karyawan(user) and siswa(student) reference in respective tables
-  date: string;
-  status: 'hadir' | 'izin' | 'sakit' | 'alpa';
+  student_id: string; 
+  mata_pelajaran: string;
+  nilai: number;
+  status: 'Lulus' | 'Remedial';
   created_at: string;
-  recorded_by?: string; // used for student attendance
 }

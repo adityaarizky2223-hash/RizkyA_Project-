@@ -3,7 +3,6 @@
 
 -- Create custom enum types
 CREATE TYPE user_role AS ENUM ('admin', 'guru', 'tenaga_kependidikan');
-CREATE TYPE attendance_status AS ENUM ('hadir', 'izin', 'sakit', 'alpa');
 
 -- 1. Profiles (extends auth.users)
 CREATE TABLE profiles (
@@ -43,38 +42,19 @@ CREATE POLICY "Only admin can manage students" ON students USING (
 );
 
 
--- 3. Attendance Karyawan (Employees check-in)
-CREATE TABLE attendance_karyawan (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  date DATE NOT NULL,
-  status attendance_status NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE (user_id, date) -- One entry per user per day
-);
-
--- Employee Attendance Policies
-ALTER TABLE attendance_karyawan ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Karyawan can view own attendance" ON attendance_karyawan FOR SELECT USING (auth.uid() = user_id OR EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
-CREATE POLICY "Karyawan can insert own attendance" ON attendance_karyawan FOR INSERT WITH CHECK (auth.uid() = user_id);
-CREATE POLICY "Admin can manage attendance" ON attendance_karyawan USING (EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin'));
-
--- 4. Attendance Siswa (Students marked by Guru/Admin)
-CREATE TABLE attendance_siswa (
+-- 3. Exam Results Table
+CREATE TABLE exam_results (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES students(id) ON DELETE CASCADE,
-  date DATE NOT NULL,
-  status attendance_status NOT NULL,
-  recorded_by UUID REFERENCES profiles(id),
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE (student_id, date) -- One entry per student per day
+  mata_pelajaran TEXT NOT NULL,
+  nilai INTEGER NOT NULL,
+  status TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Student Attendance Policies
-ALTER TABLE attendance_siswa ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Admins and Gurus can view student attendance" ON attendance_siswa FOR SELECT USING (
-  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('admin', 'guru'))
-);
-CREATE POLICY "Admins and Gurus can insert/update student attendance" ON attendance_siswa FOR ALL USING (
+-- Exam Results Policies
+ALTER TABLE exam_results ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Everyone can view results" ON exam_results FOR SELECT USING (true);
+CREATE POLICY "Admins and Gurus can insert/update results" ON exam_results FOR ALL USING (
   EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('admin', 'guru'))
 );
