@@ -1,5 +1,5 @@
 import { useAuth } from '../contexts/AuthContext';
-import { Users, UserSquare2, BookOpen } from 'lucide-react';
+import { Users, FileQuestion, GraduationCap } from 'lucide-react';
 
 export default function Dashboard() {
   const { profile } = useAuth();
@@ -7,9 +7,9 @@ export default function Dashboard() {
   if (!profile) return null;
 
   const stats = [
-    { name: 'Total Siswa', stat: '1,024', icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', roles: ['admin', 'guru'] },
-    { name: 'Karyawan Hadir', stat: '42', icon: UserSquare2, color: 'text-green-600', bg: 'bg-green-100', roles: ['admin'] },
-    { name: 'Kelas Diampu', stat: '4', icon: BookOpen, color: 'text-purple-600', bg: 'bg-purple-100', roles: ['guru'] },
+    { name: 'Total Siswa Peserta', stat: '1,024', icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', roles: ['admin', 'guru'] },
+    { name: 'Bank Soal CBT', stat: '450', icon: FileQuestion, color: 'text-green-600', bg: 'bg-green-100', roles: ['admin', 'guru'] },
+    { name: 'Ujian Berlangsung', stat: '2', icon: GraduationCap, color: 'text-purple-600', bg: 'bg-purple-100', roles: ['admin', 'guru', 'tenaga_kependidikan'] },
   ];
 
   const visibleStats = stats.filter(s => s.roles.includes(profile.role));
@@ -18,10 +18,10 @@ export default function Dashboard() {
     <div className="space-y-6">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-          Selamat datang, {profile.name}!
+          Sistem Ujian Online SMK Prima Unggul
         </h1>
         <p className="mt-2 text-gray-600 text-lg">
-          Anda login sebagai <span className="font-semibold text-primary-600 capitalize">{profile.role.replace('_', ' ')}</span>
+          Selamat datang, <span className="font-semibold text-primary-600">{profile.name}</span>. Anda mengakses sistem sebagai <span className="capitalize font-semibold text-gray-900">{profile.role.replace('_', ' ')}</span>.
         </p>
       </div>
 
@@ -37,21 +37,16 @@ export default function Dashboard() {
             </div>
           </div>
         ))}
-
-        {visibleStats.length === 0 && (
-          <div className="bg-white shadow-sm border border-gray-200 rounded-2xl p-6 col-span-full">
-            <p className="text-gray-500">Gunakan menu di samping untuk mengakses fitur aplikasi.</p>
-          </div>
-        )}
       </div>
       
       {/* Quick Action Hints */}
-      <div className="bg-primary-50 rounded-2xl p-6 border border-primary-100">
-        <h3 className="font-semibold text-primary-900 mb-2">Informasi Penting</h3>
-        <ul className="list-disc list-inside text-primary-800 space-y-1 text-sm">
-          <li>Pastikan Anda selalu mengisi <b>Absensi Karyawan</b> setiap hari kerja.</li>
-          {profile.role === 'admin' && <li>Gunakan menu User Management untuk kelola akun guru dan admin.</li>}
-          {profile.role === 'guru' && <li>Absensi Siswa hari ini ditutup otomatis pukul 15:00 WIB.</li>}
+      <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700 text-white">
+        <h3 className="font-semibold text-primary-400 mb-2">Informasi & Petunjuk Penggunaan</h3>
+        <ul className="list-disc list-inside text-slate-300 space-y-1 text-sm">
+          <li>Simulasi CBT Ujian Nasional dapat diakses melalui menu <b>Daftar Ujian</b>.</li>
+          {profile.role === 'admin' && <li>Kelola master kelas dan hak akses melalui menu Admin.</li>}
+          {profile.role === 'guru' && <li>Input paket pertanyaaan Pilihan Ganda ada di menu <b>Bank Soal</b>.</li>}
+          <li>Menu <b>Hasil & Nilai</b> akan merekap perhitungan jawaban secara otomatis setelah siswa menekan Selesai.</li>
         </ul>
       </div>
     </div>

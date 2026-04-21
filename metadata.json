@@ -1,6 +1,6 @@
 {
-  "name": "Portal SMK Prima Unggul",
-  "description": "Aplikasi absensi siswa dan karyawan terpusat dengan role dan dashboard.",
+  "name": "Sistem CBT SMK Prima Unggul",
+  "description": "Platform Ujian Online / Computer Based Test (CBT)",
   "requestFramePermissions": [],
   "majorCapabilities": []
 }

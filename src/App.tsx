@@ -7,9 +7,10 @@ import { AppShell } from './components/layout/AppShell';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import AbsensiKaryawan from './pages/AbsensiKaryawan';
-import AbsensiSiswa from './pages/AbsensiSiswa';
-import RekapAbsensi from './pages/RekapAbsensi';
+import DaftarUjian from './pages/DaftarUjian';
+import UjianSiswa from './pages/UjianSiswa';
+import BankSoal from './pages/BankSoal';
+import HasilUjian from './pages/HasilUjian';
 import DataSiswa from './pages/DataSiswa';
 import UserManagement from './pages/UserManagement';
 
@@ -25,12 +26,13 @@ export default function App() {
             <Route index element={<Navigate to="/app/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
             
-            {/* Karyawan Routes */}
-            <Route path="karyawan/absen" element={<AbsensiKaryawan />} />
+            {/* Ujian Routes */}
+            <Route path="ujian" element={<DaftarUjian />} />
+            <Route path="ujian/:id" element={<UjianSiswa />} />
             
-            {/* Guru Routes */}
-            <Route path="siswa/absen" element={<ProtectedRoute allowedRoles={['admin', 'guru']}><AbsensiSiswa /></ProtectedRoute>} />
-            <Route path="rekap" element={<ProtectedRoute allowedRoles={['admin', 'guru']}><RekapAbsensi /></ProtectedRoute>} />
+            {/* Guru / Admin Routes */}
+            <Route path="soal" element={<ProtectedRoute allowedRoles={['admin', 'guru']}><BankSoal /></ProtectedRoute>} />
+            <Route path="hasil" element={<ProtectedRoute allowedRoles={['admin', 'guru']}><HasilUjian /></ProtectedRoute>} />
             
             {/* Admin Routes */}
             <Route path="siswa" element={<ProtectedRoute allowedRoles={['admin']}><DataSiswa /></ProtectedRoute>} />

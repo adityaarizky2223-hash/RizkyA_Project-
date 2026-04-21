@@ -4,7 +4,7 @@ import {
   LayoutDashboard,
   ClipboardList,
   Users,
-  UserCheck,
+  FileQuestion,
   FileSpreadsheet,
   LogOut,
   Menu,
@@ -21,9 +21,9 @@ export function AppShell() {
 
   const navigation = [
     { name: 'Dashboard', href: '/app/dashboard', icon: LayoutDashboard, roles: ['admin', 'guru', 'tenaga_kependidikan'] },
-    { name: 'Absensi Karyawan', href: '/app/karyawan/absen', icon: ClipboardList, roles: ['admin', 'guru', 'tenaga_kependidikan'] },
-    { name: 'Absensi Siswa', href: '/app/siswa/absen', icon: UserCheck, roles: ['admin', 'guru'] },
-    { name: 'Rekap Absensi', href: '/app/rekap', icon: FileSpreadsheet, roles: ['admin', 'guru'] },
+    { name: 'Daftar Ujian', href: '/app/ujian', icon: ClipboardList, roles: ['admin', 'guru', 'tenaga_kependidikan'] },
+    { name: 'Bank Soal', href: '/app/soal', icon: FileQuestion, roles: ['admin', 'guru'] },
+    { name: 'Hasil & Nilai', href: '/app/hasil', icon: FileSpreadsheet, roles: ['admin', 'guru'] },
     { name: 'Data Siswa', href: '/app/siswa', icon: Users, roles: ['admin'] },
     { name: 'User Management', href: '/app/users', icon: Users, roles: ['admin'] },
   ];
