@@ -38,11 +38,11 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-              <span className="block text-primary-500">Sistem Absensi Digital</span>
+              <span className="block text-primary-500">Sistem Ujian Online</span>
               <span className="block mt-2 text-3xl sm:text-4xl">SMK Prima Unggul</span>
             </h1>
             <p className="mt-6 text-lg tracking-tight text-slate-300 sm:text-xl">
-              Portal terpadu untuk absensi siswa dan karyawan SMK Prima Unggul. Memudahkan pendataan, rekapitulasi, dan monitoring kedisiplinan secara real-time.
+              Portal CBT (Computer Based Test) terpadu untuk pelaksanaan ujian tryout, ulangan harian, dan ujian akhir di SMK Prima Unggul.
             </p>
             <div className="mt-10 max-w-sm mx-auto flex justify-center gap-4">
               <Link
