@@ -33,7 +33,7 @@ export function AppShell() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-slate-900 flex">
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
@@ -113,7 +113,7 @@ export function AppShell() {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto bg-gray-50 p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-auto bg-slate-900 p-4 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

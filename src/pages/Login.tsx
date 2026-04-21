@@ -37,17 +37,17 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
+    <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
             <School className="w-10 h-10 text-primary-600" />
           </div>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 tracking-tight">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-white tracking-tight">
           Portal Login
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-slate-300">
           Untuk admin, guru, dan tenaga kependidikan.
         </p>
       </div>

@@ -12,7 +12,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-900 flex flex-col font-sans">
       {/* Navbar */}
       <nav className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -37,11 +37,11 @@ export default function Landing() {
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           <div className="text-center max-w-3xl mx-auto">
-            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-              <span className="block text-primary-600">Sistem Absensi Digital</span>
+            <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
+              <span className="block text-primary-500">Sistem Absensi Digital</span>
               <span className="block mt-2 text-3xl sm:text-4xl">SMK Prima Unggul</span>
             </h1>
-            <p className="mt-6 text-lg tracking-tight text-gray-500 sm:text-xl">
+            <p className="mt-6 text-lg tracking-tight text-slate-300 sm:text-xl">
               Portal terpadu untuk absensi siswa dan karyawan SMK Prima Unggul. Memudahkan pendataan, rekapitulasi, dan monitoring kedisiplinan secara real-time.
             </p>
             <div className="mt-10 max-w-sm mx-auto flex justify-center gap-4">
