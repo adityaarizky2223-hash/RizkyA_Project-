@@ -48,7 +48,7 @@ export default function Login() {
           Portal Login
         </h2>
         <p className="mt-2 text-center text-sm text-slate-300">
-          Untuk admin, guru, dan tenaga kependidikan.
+          Untuk seluruh elemen civitas (Admin, Guru, Siswa).
         </p>
       </div>
 
@@ -71,7 +71,7 @@ export default function Login() {
 
             <div>
               <label className="block text-sm font-medium text-gray-900">
-                Email / Username
+                Email Akun CBT
               </label>
               <div className="mt-1">
                 <input
@@ -80,7 +80,7 @@ export default function Login() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none block w-full px-3 py-2.5 border border-gray-300 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm transition-colors"
-                  placeholder="admin@smkpu.sch.id"
+                  placeholder="admin/siswa@sekolah.com"
                 />
               </div>
             </div>
