@@ -203,23 +203,24 @@ export default function BankSoal() {
                   <p className="text-gray-900 font-bold text-lg mb-4">{q.text}</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
                     {q.options.map((opt, idx) => (
-                      <div 
+                      <button 
                         key={idx} 
+                        type="button"
                         onClick={() => handleSetCorrectAnswer(selectedPackage.id, q.id, opt)}
-                        className={`p-3 rounded-xl border text-sm flex items-center cursor-pointer transition-all hover:bg-opacity-80 active:scale-[0.98] ${
+                        className={`p-3 rounded-xl border text-sm flex items-center cursor-pointer transition-all hover:bg-opacity-80 active:scale-[0.98] text-left ${
                           opt === q.correctAnswer 
                             ? 'bg-green-50 border-green-200 text-green-700 font-bold' 
                             : 'bg-slate-50 border-slate-100 text-slate-600 hover:bg-slate-100'
                         }`}
                       >
-                        <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 text-xs ${
+                        <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 text-xs shrink-0 ${
                           opt === q.correctAnswer ? 'bg-green-500 text-white' : 'bg-slate-200 text-slate-500'
                         }`}>
                           {['A', 'B', 'C', 'D', 'E'][idx]}
                         </span>
-                        {opt}
-                        {opt === q.correctAnswer && <Check className="w-4 h-4 ml-auto" />}
-                      </div>
+                        <span className="flex-1">{opt}</span>
+                        {opt === q.correctAnswer && <Check className="w-4 h-4 ml-auto shrink-0" />}
+                      </button>
                     ))}
                   </div>
                   <div className="flex items-center gap-4">
