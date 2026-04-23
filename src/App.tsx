@@ -38,6 +38,9 @@ export default function App() {
             <Route path="siswa" element={<ProtectedRoute allowedRoles={['admin']}><DataSiswa /></ProtectedRoute>} />
             <Route path="users" element={<ProtectedRoute allowedRoles={['admin']}><UserManagement /></ProtectedRoute>} />
           </Route>
+
+          {/* Catch-all route to prevent 404s inside the app */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </AuthProvider>
