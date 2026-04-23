@@ -6,6 +6,8 @@ interface Question {
   id: number;
   text: string;
   type: string;
+  options: string[];
+  correctAnswer: string;
 }
 
 interface QuestionPackage {
@@ -22,6 +24,39 @@ export default function BankSoal() {
   const [showForm, setShowForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<QuestionPackage | null>(null);
   
+  const tkjQuestionsRaw = [
+    { text: "Topologi jaringan dimana setiap komputer terhubung ke satu titik pusat (hub/switch) disebut topologi...", options: ["Bus", "Ring", "Star", "Mesh", "Tree"], correctAnswer: "Star" },
+    { text: "Perintah pada Command Prompt (Windows) untuk mengecek konektivitas IP Address adalah...", options: ["ipconfig", "ping", "tracert", "netstat", "ifconfig"], correctAnswer: "ping" },
+    { text: "Alamat IP versi 4 (IPv4) terdiri dari berapa bit?", options: ["16 bit", "32 bit", "64 bit", "128 bit", "256 bit"], correctAnswer: "32 bit" },
+    { text: "Protokol yang umum digunakan untuk mengunduh email dari server adalah...", options: ["SMTP", "POP3", "FTP", "HTTP", "SNMP"], correctAnswer: "POP3" },
+    { text: "Berapakah bit yang digunakan untuk IPv6?", options: ["32 bit", "64 bit", "128 bit", "256 bit", "512 bit"], correctAnswer: "128 bit" },
+    { text: "Lapis OSI yang berfungsi mengontrol aliran data dan error recovery adalah...", options: ["Physical", "Data Link", "Network", "Transport", "Session"], correctAnswer: "Transport" },
+    { text: "Perangkat yang digunakan untuk menghubungkan dua jaringan yang berbeda protokol adalah...", options: ["Hub", "Switch", "Router", "Bridge", "Repeater"], correctAnswer: "Router" },
+    { text: "Kabel UTP kategori 5 (Cat5) memiliki kecepatan transfer data maksimal sebesar...", options: ["10 Mbps", "100 Mbps", "1 Gbps", "10 Gbps", "100 Gbps"], correctAnswer: "100 Mbps" },
+    { text: "Alat yang berfungsi untuk menyambung serat optik (fiber optik) adalah...", options: ["Crimping Tool", "Fusion Splicer", "OTDR", "Stripper", "Cleaver"], correctAnswer: "Fusion Splicer" },
+    { text: "Apa kepanjangan dari DNS?", options: ["Data Name Service", "Domain Name System", "Dynamic Network Server", "Direct Name System", "Digital Network Security"], correctAnswer: "Domain Name System" },
+    { text: "Urutan warna kabel Straight T568B pada pin 1 sampai 8 adalah...", options: ["Putih Oranye - Oranye - Putih Hijau - Biru - Putih Biru - Hijau - Putih Cokelat - Cokelat", "Putih Hijau - Hijau - Putih Oranye - Biru - Putih Biru - Oranye - Putih Cokelat - Cokelat", "Putih Oranye - Hijau - Putih Hijau - Biru - Putih Biru - Oranye - Putih Cokelat - Cokelat", "Putih Cokelat - Cokelat - Putih Hijau - Biru - Putih Biru - Hijau - Putih Oranye - Oranye", "Oranye - Putih Oranye - Hijau - Putih Hijau - Biru - Putih Biru - Cokelat - Putih Cokelat"], correctAnswer: "Putih Oranye - Oranye - Putih Hijau - Biru - Putih Biru - Hijau - Putih Cokelat - Cokelat" },
+    { text: "Port default untuk layanan HTTP adalah...", options: ["21", "22", "25", "80", "443"], correctAnswer: "80" },
+    { text: "Perintah linux untuk melihat manual dari sebuah perintah adalah...", options: ["ls", "cat", "man", "help", "pwd"], correctAnswer: "man" },
+    { text: "Alamat MAC (Media Access Control) terdiri dari berapa digit heksadesimal?", options: ["8", "12", "16", "32", "48"], correctAnswer: "12" },
+    { text: "Subnet mask default untuk IP Class C adalah...", options: ["255.0.0.0", "255.255.0.0", "255.255.255.0", "255.255.255.255", "10.0.0.0"], correctAnswer: "255.255.255.0" },
+    { text: "Teknologi nirkabel yang bekerja pada frekuensi 2.4 GHz atau 5 GHz adalah...", options: ["Bluetooth", "WLAN / Wi-Fi", "Infra Red", "Microwave", "Radio FM"], correctAnswer: "WLAN / Wi-Fi" },
+    { text: "Apa fungsi perintah 'tracert' pada Windows?", options: ["Mengecek status RAM", "Melihat jalur rute paket data", "Menghapus file temporary", "Mengatur jam sistem", "Membuat partisi baru"], correctAnswer: "Melihat jalur rute paket data" },
+    { text: "Sistem operasi yang bersifat Open Source dan turunan UNIX adalah...", options: ["Windows", "MacOS", "Linux", "iOS", "Android"], correctAnswer: "Linux" },
+    { text: "Hardware yang berfungsi sebagai otak dari komputer adalah...", options: ["RAM", "VGA", "Processor", "Power Supply", "Motherboard"], correctAnswer: "Processor" },
+    { text: "Jenis memori yang bersifat volatile (data hilang saat mati listrik) adalah...", options: ["ROM", "Harddisk", "Flasdisk", "RAM", "SSD"], correctAnswer: "RAM" },
+    { text: "Perangkat keras yang merubah sinyal digital menjadi analog dan sebaliknya adalah...", options: ["Switch", "Modem", "Access Point", "Network Card", "UPS"], correctAnswer: "Modem" },
+    { text: "Apa itu DHCP (Dynamic Host Configuration Protocol)?", options: ["Sistem pengalamatan IP otomatis", "Sistem keamanan firewall", "Sistem routing statis", "Sistem backup data", "Sistem enkripsi jaringan"], correctAnswer: "Sistem pengalamatan IP otomatis" },
+    { text: "Karakteristik utama dari Topologi Bus adalah...", options: ["Menggunakan Switch", "Memiliki Terminator di ujung kabel", "Setiap pc terhubung ke 2 pc lain", "Berbentuk seperti bintang", "Sangat handal jika kabel putus"], correctAnswer: "Memiliki Terminator di ujung kabel" },
+    { text: "Layanan yang memungkinkan user mengakses file secara remote adalah...", options: ["HTTP", "SSH / FTP", "DHCP", "DNS", "SMTP"], correctAnswer: "SSH / FTP" },
+    { text: "Apa fungsi dari FireWall?", options: ["Mempercepat internet", "Melindungi jaringan dari akses ilegal", "Menambah kapasitas RAM", "Membersihkan virus lokal", "Menghemat listrik pc"], correctAnswer: "Melindungi jaringan dari akses ilegal" },
+    { text: "Ping adalah singkatan dari...", options: ["Packet Internet Gopher", "Packet Internal Gateway", "Private Internet Group", "Port Internet Grid", "Point Infinite Game"], correctAnswer: "Packet Internet Gopher" },
+    { text: "Lapis OSI yang bersinggungan langsung dengan user adalah...", options: ["Application", "Presentation", "Session", "Transport", "Physical"], correctAnswer: "Application" },
+    { text: "Berikut merupakan IP Private, kecuali...", options: ["10.0.0.1", "172.16.0.1", "192.168.1.1", "202.155.10.1", "127.0.0.1"], correctAnswer: "202.155.10.1" },
+    { text: "Apa kepanjangan dari LAN?", options: ["Large Area Network", "Local Area Network", "Long Access Node", "Light Area Network", "Level Access Network"], correctAnswer: "Local Area Network" },
+    { text: "Jenis kabel yang menggunakan cahaya untuk transmisi data adalah...", options: ["UTP", "STP", "Coaxial", "Fiber Optic", "Cross Over"], correctAnswer: "Fiber Optic" },
+  ];
+
   const [soals, setSoals] = useState<QuestionPackage[]>([
     { 
       id: 1, 
@@ -29,7 +64,7 @@ export default function BankSoal() {
       tipe: 'Pilihan Ganda', 
       jumlah: 30, 
       createdAt: '2026-04-20',
-      questions: Array.from({ length: 30 }, (_, i) => ({ id: i + 1, text: `Pertanyaan ke-${i + 1} tentang Jaringan Komputer...`, type: 'Pilihan Ganda' }))
+      questions: tkjQuestionsRaw.map((q, i) => ({ id: i + 1, text: q.text, options: q.options, correctAnswer: q.correctAnswer, type: 'Pilihan Ganda' }))
     },
     { 
       id: 2, 
@@ -37,7 +72,13 @@ export default function BankSoal() {
       tipe: 'Pilihan Ganda', 
       jumlah: 40, 
       createdAt: '2026-04-18',
-      questions: Array.from({ length: 40 }, (_, i) => ({ id: i + 1, text: `Pertanyaan ke-${i + 1} tentang Prinsip Dasar Animasi...`, type: 'Pilihan Ganda' }))
+      questions: Array.from({ length: 40 }, (_, i) => ({ 
+        id: i + 1, 
+        text: `Pertanyaan ke-${i + 1} tentang Prinsip Dasar Animasi...`, 
+        type: 'Pilihan Ganda', 
+        options: ['Opsi A', 'Opsi B', 'Opsi C', 'Opsi D', 'Opsi E'], 
+        correctAnswer: 'Opsi A' 
+      }))
     },
     { 
       id: 3, 
@@ -45,7 +86,13 @@ export default function BankSoal() {
       tipe: 'Pilihan Ganda', 
       jumlah: 30, 
       createdAt: '2026-04-10',
-      questions: Array.from({ length: 30 }, (_, i) => ({ id: i + 1, text: `Pertanyaan ke-${i + 1} tentang Siklus Akuntansi...`, type: 'Pilihan Ganda' }))
+      questions: Array.from({ length: 30 }, (_, i) => ({ 
+        id: i + 1, 
+        text: `Pertanyaan ke-${i + 1} tentang Siklus Akuntansi...`, 
+        type: 'Pilihan Ganda', 
+        options: ['Opsi A', 'Opsi B', 'Opsi C', 'Opsi D', 'Opsi E'], 
+        correctAnswer: 'Opsi A' 
+      }))
     },
   ]);
 
@@ -67,7 +114,13 @@ export default function BankSoal() {
       tipe: 'Pilihan Ganda',
       jumlah: newJumlah,
       createdAt: new Date().toISOString().split('T')[0],
-      questions: Array.from({ length: newJumlah }, (_, i) => ({ id: i + 1, text: `Pertanyaan baru ke-${i + 1}...`, type: 'Pilihan Ganda' }))
+      questions: Array.from({ length: newJumlah }, (_, i) => ({ 
+        id: i + 1, 
+        text: `Pertanyaan baru ke-${i + 1}...`, 
+        type: 'Pilihan Ganda',
+        options: ['Opsi A', 'Opsi B', 'Opsi C', 'Opsi D', 'Opsi E'],
+        correctAnswer: 'Opsi A'
+      }))
     };
 
     setSoals([newPackage, ...soals]);
@@ -115,8 +168,31 @@ export default function BankSoal() {
                   {q.id}
                 </span>
                 <div>
-                  <p className="text-gray-900 font-medium">{q.text}</p>
-                  <p className="text-xs text-slate-400 mt-1 uppercase tracking-wider font-bold">{q.type}</p>
+                  <p className="text-gray-900 font-bold text-lg mb-4">{q.text}</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                    {q.options.map((opt, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`p-3 rounded-xl border text-sm flex items-center ${
+                          opt === q.correctAnswer 
+                            ? 'bg-green-50 border-green-200 text-green-700 font-bold' 
+                            : 'bg-slate-50 border-slate-100 text-slate-600'
+                        }`}
+                      >
+                        <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 text-xs ${
+                          opt === q.correctAnswer ? 'bg-green-500 text-white' : 'bg-slate-200 text-slate-500'
+                        }`}>
+                          {['A', 'B', 'C', 'D', 'E'][idx]}
+                        </span>
+                        {opt}
+                        {opt === q.correctAnswer && <Check className="w-4 h-4 ml-auto" />}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <span className="text-xs text-slate-400 uppercase tracking-wider font-extrabold">{q.type}</span>
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded font-bold">Kunci: {q.correctAnswer}</span>
+                  </div>
                 </div>
               </div>
               <div className="flex gap-2">
