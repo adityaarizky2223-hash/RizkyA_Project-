@@ -136,6 +136,38 @@ export default function BankSoal() {
     }
   };
 
+  const handleSetCorrectAnswer = (packageId: number, questionId: number, newAnswer: string) => {
+    setSoals(prev => prev.map(pkg => {
+      if (pkg.id === packageId) {
+        return {
+          ...pkg,
+          questions: pkg.questions?.map(q => {
+            if (q.id === questionId) {
+              return { ...q, correctAnswer: newAnswer };
+            }
+            return q;
+          })
+        };
+      }
+      return pkg;
+    }));
+    
+    if (selectedPackage && selectedPackage.id === packageId) {
+      setSelectedPackage(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          questions: prev.questions?.map(q => {
+            if (q.id === questionId) {
+              return { ...q, correctAnswer: newAnswer };
+            }
+            return q;
+          })
+        };
+      });
+    }
+  };
+
   if (selectedPackage) {
     return (
       <div className="max-w-6xl mx-auto space-y-6">
@@ -173,10 +205,11 @@ export default function BankSoal() {
                     {q.options.map((opt, idx) => (
                       <div 
                         key={idx} 
-                        className={`p-3 rounded-xl border text-sm flex items-center ${
+                        onClick={() => handleSetCorrectAnswer(selectedPackage.id, q.id, opt)}
+                        className={`p-3 rounded-xl border text-sm flex items-center cursor-pointer transition-all hover:bg-opacity-80 active:scale-[0.98] ${
                           opt === q.correctAnswer 
                             ? 'bg-green-50 border-green-200 text-green-700 font-bold' 
-                            : 'bg-slate-50 border-slate-100 text-slate-600'
+                            : 'bg-slate-50 border-slate-100 text-slate-600 hover:bg-slate-100'
                         }`}
                       >
                         <span className={`w-6 h-6 rounded-full flex items-center justify-center mr-3 text-xs ${
