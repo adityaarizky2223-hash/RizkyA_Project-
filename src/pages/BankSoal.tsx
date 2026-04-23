@@ -24,6 +24,12 @@ export default function BankSoal() {
   const [showForm, setShowForm] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<QuestionPackage | null>(null);
   
+  // Question form states
+  const [showQuestionForm, setShowQuestionForm] = useState(false);
+  const [newQText, setNewQText] = useState('');
+  const [newQOptions, setNewQOptions] = useState(['', '', '', '', '']);
+  const [newQCorrect, setNewQCorrect] = useState('');
+
   const tkjQuestionsRaw = [
     { text: "Topologi jaringan dimana setiap komputer terhubung ke satu titik pusat (hub/switch) disebut topologi...", options: ["Bus", "Ring", "Star", "Mesh", "Tree"], correctAnswer: "Star" },
     { text: "Perintah pada Command Prompt (Windows) untuk mengecek konektivitas IP Address adalah...", options: ["ipconfig", "ping", "tracert", "netstat", "ifconfig"], correctAnswer: "ping" },
@@ -168,6 +174,51 @@ export default function BankSoal() {
     }
   };
 
+  const handleAddQuestion = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedPackage || !newQText || !newQCorrect) return;
+
+    const newQuestion: Question = {
+      id: (selectedPackage.questions?.length || 0) + 1,
+      text: newQText,
+      type: 'Pilihan Ganda',
+      options: newQOptions,
+      correctAnswer: newQCorrect
+    };
+
+    const updatedSoals = soals.map(pkg => {
+      if (pkg.id === selectedPackage.id) {
+        const updatedQuestions = [...(pkg.questions || []), newQuestion];
+        return { ...pkg, questions: updatedQuestions, jumlah: updatedQuestions.length };
+      }
+      return pkg;
+    });
+
+    setSoals(updatedSoals);
+    setSelectedPackage(updatedSoals.find(p => p.id === selectedPackage.id) || null);
+    
+    // Reset form
+    setNewQText('');
+    setNewQOptions(['', '', '', '', '']);
+    setNewQCorrect('');
+    setShowQuestionForm(false);
+  };
+
+  const handleDeleteQuestion = (questionId: number) => {
+    if (!selectedPackage || !confirm('Hapus pertanyaan ini?')) return;
+
+    const updatedSoals = soals.map(pkg => {
+      if (pkg.id === selectedPackage.id) {
+        const updatedQuestions = (pkg.questions || []).filter(q => q.id !== questionId).map((q, i) => ({ ...q, id: i + 1 }));
+        return { ...pkg, questions: updatedQuestions, jumlah: updatedQuestions.length };
+      }
+      return pkg;
+    });
+
+    setSoals(updatedSoals);
+    setSelectedPackage(updatedSoals.find(p => p.id === selectedPackage.id) || null);
+  };
+
   if (selectedPackage) {
     return (
       <div className="max-w-6xl mx-auto space-y-6">
@@ -187,10 +238,68 @@ export default function BankSoal() {
               <p className="mt-1 text-sm text-slate-400">Total: {selectedPackage.jumlah} Butir Pertanyaan</p>
             </div>
           </div>
-          <button className="px-4 py-2 bg-white text-slate-900 rounded-lg font-medium hover:bg-gray-100 transition shadow-sm flex items-center">
-            <Plus className="w-4 h-4 mr-2" /> Tambah Soal
+          <button 
+            onClick={() => setShowQuestionForm(!showQuestionForm)}
+            className="px-4 py-2 bg-white text-slate-900 rounded-lg font-medium hover:bg-gray-100 transition shadow-sm flex items-center"
+          >
+            {showQuestionForm ? <X className="w-4 h-4 mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
+            {showQuestionForm ? 'Batal' : 'Tambah Soal'}
           </button>
         </div>
+
+        {showQuestionForm && (
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 animate-in fade-in slide-in-from-top-4 duration-300">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Input Pertanyaan Baru</h3>
+            <form onSubmit={handleAddQuestion} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Teks Pertanyaan</label>
+                <textarea 
+                  required
+                  rows={3}
+                  value={newQText}
+                  onChange={e => setNewQText(e.target.value)}
+                  className="w-full rounded-lg border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500"
+                  placeholder="Ketik pertanyaan di sini..."
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {newQOptions.map((opt, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="font-bold text-gray-400">{['A', 'B', 'C', 'D', 'E'][i]}</span>
+                    <input 
+                      required
+                      type="text"
+                      value={opt}
+                      onChange={e => {
+                        const next = [...newQOptions];
+                        next[i] = e.target.value;
+                        setNewQOptions(next);
+                      }}
+                      className="flex-1 rounded-lg border-gray-300 shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm"
+                      placeholder={`Opsi ${['A', 'B', 'C', 'D', 'E'][i]}`}
+                    />
+                    <input 
+                      type="radio" 
+                      name="correct-option"
+                      required
+                      checked={newQCorrect === opt && opt !== ''}
+                      onChange={() => setNewQCorrect(opt)}
+                      className="w-4 h-4 text-primary-600 focus:ring-primary-500"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-end pt-2">
+                <button 
+                  type="submit"
+                  className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition font-bold shadow-md flex items-center"
+                >
+                  <Check className="w-5 h-5 mr-2" /> Simpan Pertanyaan
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         <div className="space-y-4">
           {selectedPackage.questions?.map((q) => (
@@ -231,7 +340,12 @@ export default function BankSoal() {
               </div>
               <div className="flex gap-2">
                 <button className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition"><Edit3 className="w-4 h-4" /></button>
-                <button className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"><Trash2 className="w-4 h-4" /></button>
+                <button 
+                  onClick={() => handleDeleteQuestion(q.id)}
+                  className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             </div>
           ))}

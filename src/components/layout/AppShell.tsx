@@ -20,10 +20,10 @@ export function AppShell() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: 'Dashboard', href: '/app/dashboard', icon: LayoutDashboard, roles: ['admin', 'guru', 'tenaga_kependidikan'] },
-    { name: 'Daftar Ujian', href: '/app/ujian', icon: ClipboardList, roles: ['admin', 'guru', 'tenaga_kependidikan'] },
+    { name: 'Dashboard', href: '/app/dashboard', icon: LayoutDashboard, roles: ['admin', 'guru', 'tenaga_kependidikan', 'siswa'] },
+    { name: 'Daftar Ujian', href: '/app/ujian', icon: ClipboardList, roles: ['admin', 'guru', 'tenaga_kependidikan', 'siswa'] },
     { name: 'Bank Soal', href: '/app/soal', icon: FileQuestion, roles: ['admin', 'guru'] },
-    { name: 'Hasil & Nilai', href: '/app/hasil', icon: FileSpreadsheet, roles: ['admin', 'guru'] },
+    { name: 'Hasil & Nilai', href: '/app/hasil', icon: FileSpreadsheet, roles: ['admin', 'guru', 'siswa'] },
     { name: 'Data Siswa', href: '/app/siswa', icon: Users, roles: ['admin'] },
     { name: 'User Management', href: '/app/users', icon: Users, roles: ['admin'] },
   ];

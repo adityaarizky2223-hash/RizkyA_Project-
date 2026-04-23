@@ -13,15 +13,26 @@ export default function HasilUjian() {
     { id: 4, nama: 'Dewi Lestari', nis: '1004', kelas: 'AK-1', mapel: 'Ulangan Harian Akuntansi', nilai: 78, status: 'Lulus' },
   ];
 
+  const filteredResults = results.filter(r => {
+    // If student, only show their own results
+    if (profile?.role === 'siswa') {
+      return r.nama === profile.name;
+    }
+    // If admin/guru, show all matching search
+    return r.nama.toLowerCase().includes(search.toLowerCase()) || r.nis.includes(search);
+  });
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="bg-slate-800 rounded-2xl shadow-sm border border-slate-700 p-6 flex justify-between items-center text-white">
         <div>
           <h2 className="text-2xl font-bold flex items-center">
             <FileSpreadsheet className="w-6 h-6 mr-2 text-primary-500" />
-            Rekap Hasil Ujian
+            {profile?.role === 'siswa' ? 'Hasil Ujian Saya' : 'Rekap Hasil Ujian'}
           </h2>
-          <p className="mt-1 text-sm text-slate-400">Laporan real-time nilai CBT siswa.</p>
+          <p className="mt-1 text-sm text-slate-400">
+            {profile?.role === 'siswa' ? 'Riwayat nilai ujian yang telah dikerjakan.' : 'Laporan real-time nilai CBT siswa.'}
+          </p>
         </div>
         <button className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-slate-900 bg-white hover:bg-gray-100 transition shadow-sm">
           <Download className="w-4 h-4 mr-2" /> Unduh PDF
@@ -29,20 +40,22 @@ export default function HasilUjian() {
       </div>
 
       <div className="bg-white shadow-sm rounded-2xl border border-gray-200 overflow-hidden p-6 space-y-4">
-        <div className="flex justify-between items-center mb-4">
-          <div className="relative w-72">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
+        {profile?.role !== 'siswa' && (
+          <div className="flex justify-between items-center mb-4">
+            <div className="relative w-72">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Cari siswa atau NIS..."
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Cari siswa atau NIS..."
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
           </div>
-        </div>
+        )}
 
         <div className="overflow-x-auto rounded-lg border border-gray-200">
           <table className="min-w-full divide-y divide-gray-200">
@@ -56,7 +69,7 @@ export default function HasilUjian() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {results.filter(r => r.nama.toLowerCase().includes(search.toLowerCase()) || r.nis.includes(search)).map((row) => (
+              {filteredResults.map((row) => (
                 <tr key={row.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-bold text-gray-900">{row.nama}</div>

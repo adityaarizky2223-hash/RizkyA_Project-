@@ -9,7 +9,7 @@ export default function Dashboard() {
   const stats = [
     { name: 'Total Siswa Peserta', stat: '1,024', icon: Users, color: 'text-blue-600', bg: 'bg-blue-100', roles: ['admin', 'guru'] },
     { name: 'Bank Soal CBT', stat: '450', icon: FileQuestion, color: 'text-green-600', bg: 'bg-green-100', roles: ['admin', 'guru'] },
-    { name: 'Ujian Berlangsung', stat: '2', icon: GraduationCap, color: 'text-purple-600', bg: 'bg-purple-100', roles: ['admin', 'guru', 'tenaga_kependidikan'] },
+    { name: 'Ujian Berlangsung', stat: '2', icon: GraduationCap, color: 'text-purple-600', bg: 'bg-purple-100', roles: ['admin', 'guru', 'tenaga_kependidikan', 'siswa'] },
   ];
 
   const visibleStats = stats.filter(s => s.roles.includes(profile.role));
